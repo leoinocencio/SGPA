@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/default.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+			<h:form id="formDadosPessoais" prependId="false" enctype="multipart/form-data">
+				<p:fieldset id="dadosPessoais" legend="#{cadastraPessoaBean.proprioRegistro ? 'Alterar cadastro' : 'Cadastro de Pessoa(s)'}">
+					<p:panelGrid id="panel" styleClass="noborder" columns="2">
+						
+						<p:outputPanel id="labelTipoPessoa" rendered="#{!cadastraPessoaBean.proprioRegistro}">
+							<h:outputText value="Tipo de Pessoa* :" style="font-weight:bold;" />
+						</p:outputPanel>
+						<p:outputPanel id="mostraTipoPessoa" rendered="#{!cadastraPessoaBean.proprioRegistro}">
+							<p:selectOneMenu id="tipoPessoa_"
+								value="#{cadastraPessoaBean.pessoa.tipoPessoa}"
+								requiredMessage="Preencha o campo Tipo de Pessoa" height="200"
+								style="width:380px;" converter="#{tipoPessoaConverter}" required="true">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{cadastraPessoaBean.listaTipoPessoa}"
+									var="tipoPessoa" itemValue="#{tipoPessoa}"
+									itemLabel="#{tipoPessoa.descricao}" />
+								<p:ajax event="change" listener="#{cadastraPessoaBean.mostraCampos()}" update=":formDadosPessoais" immediate="false" onstart="statusDialog.show()" oncomplete="statusDialog.hide()"/>
+							</p:selectOneMenu>
+						</p:outputPanel>
+						
+						<h:outputText value="Nome* :" style="font-weight:bold;" />
+						<p:inputText id="nome" required="true"
+							requiredMessage="Preencha o campo Nome." style="width:350px; text-transform: uppercase;"
+							value="#{cadastraPessoaBean.pessoa.nome}" maxlength="255"/>
+
+						<h:outputText value="CPF* :" style="font-weight:bold;" />
+						<p:inputMask id="cpf" mask="999.999.999-99" required="true"
+							requiredMessage="Preencha o campo CPF." style="width:150px;"
+							value="#{cadastraPessoaBean.cpf}" />
+
+						<h:outputText value="RG* :" style="font-weight:bold;" />
+						<p:inputText id="rg" required="true"
+							requiredMessage="Preencha o campo RG." style="width:150px;" 
+							value="#{cadastraPessoaBean.pessoa.rg}" maxlength="9"/>
+
+						<h:outputText value="Nº Carteira de Trabalho :" style="font-weight:bold;" />
+						<p:inputText id="numeroCarteiraTrabalho" required="false"
+							requiredMessage="Preencha o campo Nº Carteira de Trabalho."
+							style="width:150px;"
+							value="#{cadastraPessoaBean.pessoa.n_carteira_trabalho}" maxlength="50"/>
+						
+						<p:outputPanel id="advogado" rendered="#{cadastraPessoaBean.flagAdvogado}">
+							<h:outputText value="Nº OAB* :" style="font-weight:bold;" />
+						</p:outputPanel>
+						<p:outputPanel rendered="#{cadastraPessoaBean.flagAdvogado}">
+							<p:inputText id="numeroOAB" required="true"
+							requiredMessage="Preencha o campo Nº OAB." style="width:150px;"
+							value="#{cadastraPessoaBean.pessoa.n_oab}" maxlength="50"/>
+						</p:outputPanel>
+						<h:outputText value="Login* :" style="font-weight:bold;" />
+						<p:inputText id="login" required="true"
+							requiredMessage="Preencha o campo Login." style="width:150px; text-transform: uppercase;"
+							value="#{cadastraPessoaBean.pessoa.login}" maxlength="255"/>
+
+						<h:outputText value="Senha* :" style="font-weight:bold;" />
+						<p:password id="password" required="true"
+							requiredMessage="Preencha o campo Senha."
+							style="width:150px;" value="#{cadastraPessoaBean.pessoa.senha}"
+							feedback="true" promptLabel="Digite a senha"
+							weakLabel="Força da senha : Fraca"
+							goodLabel="Força da senha : Média"
+							strongLabel="Força da senha : Forte"></p:password>
+
+						<h:outputText value="Comentário :" style="font-weight:bold;" />
+						<p:inputTextarea rows="5" cols="50" counter="display"
+							maxlength="4000" counterTemplate="{0} caracteres restantes."
+							autoResize="false" value="#{cadastraPessoaBean.pessoa.dsComentario}"/>
+						<h:outputText value="" />
+						<h:outputText id="display" />
+					</p:panelGrid>
+				</p:fieldset>
+				<br />
+				<p:commandButton value="Cadastrar Pessoa" ajax="false" actionListener="#{cadastraPessoaBean.salvarPessoa}" rendered="#{cadastraPessoaBean.pessoa.id == null}"/>
+				<p:commandButton value="Alterar Pessoa" ajax="false" actionListener="#{cadastraPessoaBean.salvarPessoa}" rendered="#{cadastraPessoaBean.pessoa.id != null}"/>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

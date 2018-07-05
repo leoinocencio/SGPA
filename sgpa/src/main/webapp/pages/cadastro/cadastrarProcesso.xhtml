@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/template/default.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="complete"><h:outputText value="" /></f:facet>
+			</p:ajaxStatus>							
+			<h:form id="formProcesso" prependId="false" enctype="multipart/form-data">
+				<p:fieldset id="fieldsetProcesso" legend="Cadastro de Processo(s)">
+					<p:panelGrid id="panel" styleClass="noborder" columns="2">
+					
+						<h:outputText value="Número do processo* :" style="font-weight:bold;"  />
+						<p:inputText id="nuProcesso" required="true" requiredMessage="Preencha o campo Número do processo" style="width:350px;" value="#{cadastraProcessoBean.processo.numeroProcesso}"/>
+					
+						<h:outputLabel for="clienteSelect" value="Cliente* :" style="font-weight:bold" />
+	       				 <p:selectOneMenu id="clienteSelect" style="width: 100%" converter="#{pessoaConverter}" required="true" requiredMessage="Preencha o campo Cliente" value="#{cadastraProcessoBean.processo.cliente}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems 	value="#{cadastraProcessoBean.listaCliente}" var="cli" itemLabel="#{cli.nome}"	itemValue="#{cli}"/>
+						</p:selectOneMenu>
+						
+						<h:outputLabel for="advogadoSelect" value="Advogado* :" style="font-weight:bold" />
+	       				 <p:selectOneMenu id="advogadoSelect" style="width: 100%" converter="#{pessoaConverter}" required="true" requiredMessage="Preencha o campo Advogado" value="#{cadastraProcessoBean.processo.advogado}" disabled="#{cadastraProcessoBean.advogado}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems 	value="#{cadastraProcessoBean.listaAdvogado}" var="adv" itemLabel="#{adv.nome}"	itemValue="#{adv}"/>
+						</p:selectOneMenu>
+						
+						<h:outputText value="Valor total da causa* :" style="font-weight:bold;"  />
+						<pe:inputNumber id="valorIndenizacao" value="#{cadastraProcessoBean.processo.valorIndenizacao}" symbol="R$ " decimalSeparator="," thousandSeparator="." 
+						required="true" requiredMessage="Preencha o campo Valor total da causa"/>
+						
+						<h:outputText value="Tipo do processo* :" style="font-weight:bold;"  />
+						<p:selectOneMenu id="tipoProcesso" required="true" requiredMessage="Preencha o campo Tipo do Processo" style="width:350px;" value="#{cadastraProcessoBean.processo.tpProcesso}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{cadastraProcessoBean.tipos}" var="tipo" itemLabel="#{tipo.descricao}" itemValue="#{tipo}"/>
+						</p:selectOneMenu>
+						
+						<h:outputText value="Status do processo* :" style="font-weight:bold;"  />
+						<p:inputText id="statusProcesso" required="true" requiredMessage="Preencha o campo Status do processo" style="width:350px;text-transform: uppercase;" value="#{cadastraProcessoBean.processo.stProcesso}"/>
+						
+						<h:outputText value="Data Início :" style="font-weight:bold"/>
+	        			<p:calendar id="dtInicio" value="#{cadastraProcessoBean.processo.dtInicio}" showOn="button" pattern="dd/MM/yyyy" maxlength="10" mindate="01/01/2000" mask="true" readonlyInput="true" locale="pt" navigator="true" disabled="false"/>
+	        			
+						<h:outputText value="Data Fim :" style="font-weight:bold"/>
+	        			<p:calendar id="dtFim" value="#{cadastraProcessoBean.processo.dtFim}" showOn="button" pattern="dd/MM/yyyy" maxlength="10" mindate="01/01/2000" mask="true" readonlyInput="true" locale="pt" navigator="true" disabled="true"/>
+					</p:panelGrid>
+					<p:panelGrid id="panelArquivo" styleClass="noborder" columns="3">	
+						<h:outputText value="Arquivo do processo digital* :" style="font-weight:bold;"  />
+						<c:choose>
+							<c:when test="#{cadastraProcessoBean.processo.id != null and cadastraProcessoBean.alterarArquivo}" >
+								<h:outputText value="#{cadastraProcessoBean.processo.documento.nome}" style="font-weight:bold;"/>
+								<p:commandButton id="alterarArquivo" value="Alterar Arquivo" ajax="true" actionListener="#{cadastraProcessoBean.editarArquivo()}">
+									<p:ajax event="click" update=":formProcesso" immediate="false" onstart="statusDialog.show()" oncomplete="statusDialog.hide()"/>
+								</p:commandButton>
+							</c:when>
+							<c:otherwise>
+								<p:fileUpload value="#{cadastraProcessoBean.file}" mode="simple" skinSimple="true" label="Selecionar arquivo" allowTypes="/(\.|\/)(doc|docx|pdf|odt|zip|rar)$/" fileLimit="1"
+								required="true" requiredMessage="Adicione um arquivo do processo digital" fileUploadListener="#{cadastraProcessoBean.carregarArquivo()}"/>
+							</c:otherwise>
+						</c:choose>
+					</p:panelGrid>
+				</p:fieldset>
+				<br/>
+				<p:commandButton value="Cadastrar Processo" ajax="false" actionListener="#{cadastraProcessoBean.salvar}" rendered="#{cadastraProcessoBean.processo.id == null}"/>
+				<p:commandButton value="Alterar Processo" ajax="false" actionListener="#{cadastraProcessoBean.salvar}" rendered="#{cadastraProcessoBean.processo.id != null}"/>
+				<p:commandButton value="Finalizar Processo" ajax="false" actionListener="#{cadastraProcessoBean.finalizaProcesso}" rendered="#{cadastraProcessoBean.processo.id != null and cadastraProcessoBean.processo.dtFim == null}" update=":formProcesso"/>
+				<p:commandButton value="Finalizar Processo Perdido" ajax="false" actionListener="#{cadastraProcessoBean.finalizaProcessoPerdido}" rendered="#{cadastraProcessoBean.processo.id != null and cadastraProcessoBean.processo.dtFim == null}" update=":formProcesso"/>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

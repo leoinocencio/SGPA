@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/template/default.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+			<h:form id="formContrato" prependId="false"
+				enctype="multipart/form-data">
+				<p:fieldset id="fieldsetContrato" legend="Consultar Contrato(s)">
+					<p:panelGrid id="filtros" styleClass="noborder" columns="2">
+
+						<h:outputText value="Nº do contrato :" style="font-weight:bold;" />
+						<p:inputText id="numeroContrato"
+							value="#{cadastraContratoBean.contratoFiltro.id}"
+							required="false" style="width:350px;" />
+
+						<h:outputLabel for="processoSelect" value="Processo :"
+							style="font-weight:bold" />
+						<p:selectOneMenu id="processoSelect"
+							value="#{cadastraContratoBean.contratoFiltro.processo}"
+							requiredMessage="Preencha o campo Processo" height="200"
+							style="width:380px;" converter="#{processoConverter}"
+							required="false">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{cadastraContratoBean.listaProcesso}"
+								var="processo" itemValue="#{processo}"
+								itemLabel="#{processo.numeroProcesso}" />
+						</p:selectOneMenu>
+						<p:row>
+							<p:commandButton
+								actionListener="#{cadastraContratoBean.consultar}"
+								value="Pesquisar" update="tabelaContratos" />
+							<p:commandButton
+								actionListener="#{cadastraContratoBean.consulta()}"
+								value="Limpar Filtros" update="tabelaContratos,filtros" />
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+				<br />
+				<p:dataTable id="tabelaContratos" var="contrato"
+					value="#{cadastraContratoBean.listaContratos}"
+					emptyMessage="Nenhum contrato encontrado.">
+					<p:column headerText="#{messages['contrato.label.numeroContrato']}"
+						width="80">
+						<div align="center">
+							<h:outputText id="nuContrato" value="#{contrato.id}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['contrato.label.cliente']}"
+						width="150">
+						<div align="center">
+							<h:outputText id="nome" value="#{contrato.processo.cliente.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['contrato.label.advogado']}"
+						width="150">
+						<div align="center">
+							<h:outputText id="advogado"
+								value="#{contrato.processo.advogado.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['contrato.label.contrato']}"
+						width="60">
+						<div align="center">
+							<h:outputText id="arquivo" value="#{contrato.documento.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['label.opcoes']}" width="130">
+						<div align="center">
+							<p:commandButton id="botaoEditar"
+								title="#{messages['label.editar']}" style="float:center"
+								icon="ui-icon-pencil"
+								action="#{cadastraContratoBean.editar(contrato)}" />
+							<p:commandButton id="botaoExcluir" style="float:center"
+								icon="ui-icon-trash" title="#{messages['label.excluir']}"
+								immediate="true"
+								actionListener="#{cadastraContratoBean.excluir(contrato)}"
+								update="tabelaContratos">
+								<p:confirm header="Confirmação" message="#{messages['MSG42']}"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+							<p:commandButton id="btnDownload" title="Baixar Contrato"
+								immediate="true" icon="ui-icon-disk"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload
+									value="#{cadastraContratoBean.fazerDownload(contrato)}" />
+							</p:commandButton>
+						</div>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

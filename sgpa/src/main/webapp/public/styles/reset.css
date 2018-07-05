@@ -1,0 +1,31 @@
+div, form, fieldset, legend, label, p, 
+table, tr, td, ul, ol, a { vertical-align: baseline; font-weight: inherit; font-family: inherit;
+                           font-style: inherit; font-size: inherit; border: 0 solid white; padding: 0; margin: 0;}
+
+html, body               { margin: 0px; padding: 0px;}
+
+body                     { overflow-y: scroll; min-width: 768px;
+                           font-family: Arial, sans-serif; font-size: 11px;}
+
+table                    { border-collapse: collapse; border-spacing: 0;
+                           empty-cells:show; }
+
+th, td                   { text-align: left; vertical-align: middle; }
+
+h1, h2, h3, h4, h5, h6,
+caption                  { font-weight:normal; }
+
+ul, ol                   { list-style-type: none; list-style-position: inside; }
+
+button, input, select, textarea  { font-weight: normal; font-style: normal; font-family: inherit;
+                           text-decoration: none; vertical-align: middle; box-sizing: border-box;
+                           -ms-box-sizing: border-box; -moz-box-sizing: border-box;
+                           -webkit-box-sizing: border-box; outline: none;}
+button[disabled], 
+input[disabled],
+select[disabled],
+textarea[disabled]       { opacity: 0.7 }
+                                  
+img                      { border: 0; }
+a                        { color: #000099;  text-decoration: underline;}
+a:hover                  { text-decoration: none; }

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/template/default.xhtml">
+
+	<ui:define name="content">
+		<f:view>
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="complete"><h:outputText value="" /></f:facet>
+			</p:ajaxStatus>							
+			<h:form id="formPagamento" prependId="false" enctype="multipart/form-data">
+				<p:fieldset id="filtros" legend="Consultar Pagamento(s)">
+					<p:panelGrid id="panel" styleClass="noborder" columns="2">
+					<h:outputLabel for="clienteSelect" value="Cliente* :" style="font-weight:bold" />
+       				 <p:selectOneMenu id="clienteSelect" style="width: 100%" converter="#{pessoaConverter}" required="false" requiredMessage="Preencha o campo Cliente" value="#{cadastraPagamentoBean.pagamentoFiltro.cliente}" disabled="#{cadastraPagamentoBean.cliente}">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems 	value="#{cadastraPagamentoBean.listaCliente}" var="cli" itemLabel="#{cli.nome}"	itemValue="#{cli}"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel for="processoSelect" value="Processo* :"
+							style="font-weight:bold" />
+					<p:selectOneMenu id="processoSelect"
+						value="#{cadastraPagamentoBean.pagamentoFiltro.processo}"
+						requiredMessage="Preencha o campo Processo" height="200"
+						style="width:380px;" converter="#{processoConverter}"
+						required="false">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems
+							value="#{cadastraPagamentoBean.listaProcessos}"
+							var="processo" itemValue="#{processo}"
+							itemLabel="#{processo.numeroProcesso}" />
+					</p:selectOneMenu>
+					
+					<h:outputText value="Nº do pagamento* :" style="font-weight:bold;"  />
+					<p:inputText id="numeroPagamento" value="#{cadastraPagamentoBean.pagamentoFiltro.numeroPagamento}" required="false" requiredMessage="Preencha o campo Nº do pagamento." style="width:350px;" />
+				
+					<h:outputText value="Data do Pagamento:" style="font-weight:bold"/>
+        			<p:calendar id="dataPagamento" value="#{cadastraPagamentoBean.pagamentoFiltro.dataPagamento}" showOn="button" pattern="dd/MM/yyyy" maxlength="10" mindate="01/01/2000" mask="true" readonlyInput="true" locale="pt" navigator="true"
+        			required="false" requiredMessage="Preencha o campo Data do pagamento"/>
+					<p:row>
+						<p:commandButton
+							actionListener="#{cadastraPagamentoBean.consultar}"
+							value="Pesquisar" update="tabelaPagamentos" />
+						<p:commandButton
+							actionListener="#{cadastraPagamentoBean.consulta()}"
+							value="Limpar Filtros" update="tabelaPagamentos,filtros"/>
+					</p:row>		
+					</p:panelGrid>
+				</p:fieldset>
+				<br/>
+				<p:dataTable id="tabelaPagamentos" var="pagamento"
+					value="#{cadastraPagamentoBean.listaPagamentos}"
+					emptyMessage="Nenhum pagamento encontrado.">
+					<p:column headerText="#{messages['pagamento.label.numeroProcesso']}"
+						width="70">
+						<div align="center">
+							<h:outputText id="nuProcesso" value="#{pagamento.processo.numeroProcesso}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['pagamento.label.numeroPagamento']}"
+						width="70">
+						<div align="center">
+							<h:outputText id="nuPagamento" value="#{pagamento.numeroPagamento}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['pagamento.label.cliente']}"
+						width="150">
+						<div align="center">
+							<h:outputText id="nome" value="#{pagamento.processo.cliente.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['pagamento.label.comprovante']}"
+						width="70">
+						<div align="center">
+							<h:outputText id="arquivo" value="#{pagamento.documento.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['label.opcoes']}" width="110">
+						<div align="center">
+							<p:commandButton id="botaoEditar"
+								title="#{messages['label.editar']}" style="float:center"
+								icon="ui-icon-pencil"
+								action="#{cadastraPagamentoBean.editar(pagamento)}" />
+							<p:commandButton id="botaoExcluir" style="float:center"
+								icon="ui-icon-trash" title="#{messages['label.excluir']}"
+								immediate="true"
+								actionListener="#{cadastraPagamentoBean.excluir(pagamento)}"
+								update="tabelaPagamentos">
+								<p:confirm header="Confirmação" message="#{messages['MSG15']}"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+							<p:commandButton id="btnDownload" title="Baixar Comprovante" immediate="true" icon="ui-icon-disk"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{cadastraPagamentoBean.fazerDownload(pagamento)}" />
+							</p:commandButton>
+						</div>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,73 @@
+body.contraste{
+	background-color: #000;
+	color: yellow;
+}
+
+body.contraste a{
+	color: yellow;
+}
+
+body.contraste .topo{
+	background-color: #000;
+	border-bottom: 2px yellow solid;
+}
+
+body.contraste .identificacao_sistema{
+	background-color: #000;
+}
+
+body.contraste .rodape{
+	background-color: #333;
+	color:yellow;
+}
+
+body.contraste .nav_menu{
+	background-color: #333;
+}
+
+body.contraste .corpo{
+	background-color: #000;
+}
+
+.acessibilidade{
+	float: right;
+	font-size: 12px;	
+}
+.acessibilidade a{
+	color: #323232;
+	text-decoration: underline;
+}
+
+body.contraste .nav .dropdown-toggle .caret {
+	margin-top: 6px;
+	border-top-color: yellow;
+	border-bottom-color: yellow;
+}
+
+body.contraste .menu > .menu_int > .nav-pills > .active > a,
+body.contraste .menu > .menu_int > .nav-pills > .active > a:hover {
+  color: yellow;
+  background-color: #333;
+}
+
+body.contraste .nav > li > a:hover,
+body.contraste .nav > li > a:focus {
+  text-decoration: none;
+  background-color: #333;
+}
+
+body.contraste .identificacao_sistema .id_sis_interna .nome_sitema{
+	color: yellow;
+}
+
+body.contraste legend{
+	color: yellow;
+}
+
+body.contraste .add-on, body.contraste .help-block{
+	color: #333;
+}
+
+body.contraste .form-actions{
+	background-color: #000;
+}

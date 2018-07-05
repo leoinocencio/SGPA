@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/default.xhtml">
+	<ui:define name="content">
+		<f:view>
+			<h:form id="consultaProcesso">
+				<p:fieldset id="filtros" legend="Consultar Processo(s)"
+					style="margin-bottom:20px">
+					<p:panelGrid id="painelFiltros" columns="2" cellspacing="5"
+						styleClass="noborder">
+						<h:outputText value="Número do processo :"
+							style="font-weight:bold;" />
+						<p:inputText id="nuProcesso" style="width:350px;"
+							value="#{cadastraProcessoBean.processoFiltro.numeroProcesso}" />
+
+						<h:outputLabel for="clienteSelect" value="Cliente :"
+							style="font-weight:bold" />
+						<p:selectOneMenu id="clienteSelect" style="width: 100%"
+							converter="#{pessoaConverter}"
+							value="#{cadastraProcessoBean.processoFiltro.cliente}"
+							disabled="#{!cadastraProcessoBean.advogado and !cadastroProcessoBean.usuarioSessao.tipoPessoa.descricao == 'ADMINISTRADOR'}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{cadastraProcessoBean.listaCliente}"
+								var="cli" itemLabel="#{cli.nome}" itemValue="#{cli}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="advogadoSelect" value="Advogado :"
+							style="font-weight:bold" />
+						<p:selectOneMenu id="advogadoSelect" style="width: 100%"
+							converter="#{pessoaConverter}"
+							value="#{cadastraProcessoBean.processoFiltro.advogado}"
+							disabled="#{cadastraProcessoBean.advogado}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{cadastraProcessoBean.listaAdvogado}"
+								var="adv" itemLabel="#{adv.nome}" itemValue="#{adv}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Tipo do processo :" style="font-weight:bold;" />
+						<p:selectOneMenu id="tipoProcesso" style="width:350px;"
+							value="#{cadastraProcessoBean.processoFiltro.tpProcesso}">
+							<f:selectItem itemLabel="Selecione" itemValue="" />
+							<f:selectItems value="#{cadastraProcessoBean.tipos}" var="tipo"
+								itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+						</p:selectOneMenu>
+
+						<h:outputText value="Status do processo :"
+							style="font-weight:bold;" />
+						<p:inputText id="statusProcesso" style="width:350px;text-transform: uppercase;"
+							value="#{cadastraProcessoBean.processoFiltro.stProcesso}"/>
+
+						<p:row>
+							<p:commandButton
+								actionListener="#{cadastraProcessoBean.consultar}"
+								value="Pesquisar" update="tabelaProcessos" />
+							<p:commandButton actionListener="#{cadastraProcessoBean.view()}"
+								value="Limpar Filtros" update="tabelaProcessos,filtros" />
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+				<p:dataTable id="tabelaProcessos" var="processo"
+					value="#{cadastraProcessoBean.listaProcessos}"
+					emptyMessage="Nenhum processo encontrado." rows="10"
+					paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="#{messages['processo.label.numeroProcesso']}"
+						width="100">
+						<div align="center">
+							<h:outputText id="nuProcesso" value="#{processo.numeroProcesso}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['processo.label.cliente']}"
+						width="150">
+						<div align="center">
+							<h:outputText id="nome" value="#{processo.cliente.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['processo.label.status']}"
+						width="100">
+						<div align="center">
+							<h:outputText id="stProcesso" value="#{processo.stProcesso}" />
+						</div>
+					</p:column>
+
+					<p:column headerText="#{messages['processo.label.arquivo']}"
+						width="50">
+						<div align="center">
+							<h:outputText id="arquivo" value="#{processo.documento.nome}" />
+						</div>
+					</p:column>
+					<p:column headerText="#{messages['label.opcoes']}" width="130">
+						<div align="center">
+							<p:commandButton id="botaoEditar"
+								title="#{messages['label.editar']}" style="float:center"
+								icon="ui-icon-pencil"
+								action="#{cadastraProcessoBean.editar(processo)}" />
+							<p:commandButton id="botaoExcluir" style="float:center"
+								icon="ui-icon-trash" title="#{messages['label.excluir']}"
+								immediate="true"
+								actionListener="#{cadastraProcessoBean.excluir(processo)}"
+								update="tabelaProcessos">
+								<p:confirm header="Confirmação" message="#{messages['MSG20']}"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+							<p:commandButton id="btnDownload" title="Baixar Processo"
+								immediate="true" icon="ui-icon-disk"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload
+									value="#{cadastraProcessoBean.fazerDownload(processo)}" />
+							</p:commandButton>
+						</div>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</f:view>
+	</ui:define>
+</ui:composition>

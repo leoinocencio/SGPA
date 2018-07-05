@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<session-factory>
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.AreaEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.BaseEntity" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.CorpCidadeEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.CorpUFEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.DocumentoEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.GrauInstrucaoEntity" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.SubAreaAvaliacaoEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.SubAreaEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.SubAreaInteresseEntity" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.TelefoneEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.TipoTelefoneEntity"/> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.entity.TutorEntity" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.AreaDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.CorpCidadeDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.CorpUFDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.DocumentoDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.GenericDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.GenericDaoMysql" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.GenericDaoOracle" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.GrauInstrucaoDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.SubAreaAvaliacaoDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.SubAreaDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.SubAreaInteresseDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.TelefoneDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.TipoTelefoneDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.dao.TutorDao" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.AreaBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.CorpCidadeBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.CorpUFBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.DocumentoBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.GrauInstrucaoBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.SubAreaAvaliacaoBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.SubAreaBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.SubAreaInteresseBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.TelefoneBusiness" /> -->
+<!-- 		<mapping class="br.jus.cnj.siscadi.business.TipoTelefoneBusiness" /> -->
+		<mapping class="br.com.sgpa.entity.TipoPessoa" />
+		<mapping class="br.com.sgpa.entity.Pessoa" />
+		
+		<mapping class="br.com.sgpa.business.TipoPessoaBusiness" />
+		
+		<mapping class="br.com.sgpa.dao.GenericDaoMysql" />
+		<mapping class="br.com.sgpa.dao.TipoPessoaDao" />
+
+		<!-- 
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" />
+		<mapping class="br.jus.cnj.siscadi.entity" /> -->
+	</session-factory>
+
+</hibernate-configuration>

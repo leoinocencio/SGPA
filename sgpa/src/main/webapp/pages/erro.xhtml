@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//pD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/pD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/defaultExterno.xhtml">
+	<ui:define name="content">	
+		<f:view contentType="text/html; charset=ISO-8859-1" encoding="ISO-8859-1">
+
+			<div style="height: 400px;color: #FF0000; text-align: center;">
+				
+				<p:outputLabel value="#{messages['mensagem.informa.credencial.invalido']}"/>
+			
+				<br/><br/>
+				
+				<h:form>
+				
+				<p:commandLink value=" Acesse o Corporativo" action="#{usuarioLoginBean.sair}"/>
+
+    			</h:form>
+
+				<script language="javascript">
+					$( "#menu_navbar" ).remove();
+					$( "#nav_menu" ).remove();
+					$( "#botaoVoltar" ).remove();
+				</script>
+			</div>
+		</f:view>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:app="http://springfuse.jaxio.com/app" contentType="text/html" encoding="ISO-8859-1">
+
+	<html xmlns="http://www.w3.org/1999/xhtml" 
+		xml:lang="${contaContext.locale}" lang="${contaContext.locale}">
+
+<h:head>
+	<title>Sistema de Gestão de Processos Advocatícios - SGPA</title>
+	
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/public/styles/contraste.css"
+		media="screen" />
+
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/public/styles/bootstrap.css"
+		media="screen" />
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/public/styles/tmpl.css"
+		media="screen" />	
+		
+	<link rel="stylesheet" type="text/css"
+		href="#{facesContext.externalContext.requestContextPath}/public/styles/default.css"
+		media="screen" />	
+	<script
+		src="#{facesContext.externalContext.requestContextPath}/public/js/acessibilidade.js"></script>
+	<script language="javascript">
+		function rolarBarraTopo() 
+		{
+			window.scrollTo(0,0); 
+		}
+	</script>
+
+	<ui:insert name="head"></ui:insert>
+</h:head>
+<h:body class="layout">
+	<p:ajaxStatus>
+		<f:facet name="start">
+<!-- 			<div class="ui-corner-all ajax-status"> -->
+<!-- 				<h:graphicImage value="/public/images/ajax-loader.gif" -->
+<!-- 					style="vertical-align: middle" /> -->
+<!-- 				<span style="vertical-align: middle"><h:outputText -->
+<!-- 						value=" Carregando..." /></span> -->
+<!-- 			</div> -->
+		</f:facet><!--  -->
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<div class="topo">
+		<div class="marca">
+<!-- 			<div class="marca-cnj"> -->
+<!-- 				<a href="http://www.cnj.jus.br" target="_blank"> <img -->
+<!-- 					src="#{facesContext.externalContext.requestContextPath}/public/images/marca_cnj.png" -->
+<!-- 					alt="Marca CNJ" /> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
+<!-- 			<div class="marca-judiciario"> -->
+<!-- 				<a href="http://www.cnj.jus.br" target="_blank"> <img -->
+<!-- 					src="#{facesContext.externalContext.requestContextPath}/public/images/marca_jus.png" -->
+<!-- 					alt="Marca CNJ" /> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
+		</div>
+	</div>
+
+	<div class="identificacao_sistema">
+		<div class="id_sis_interna">
+			<div class="acessibilidade">
+				<a accesskey="3" href="#" class="toggle-diminuir">Diminuir letra
+					A- </a>| <a accesskey="3" href="#" class="toggle-aumentar">Aumentar
+					letra A+ </a>| <a accesskey="3" href="#" class="toggle-resetar">Tamanho
+					normal da letra A </a>| <a accesskey="3" href="#"
+					class="toggle-contraste">Alto Contraste</a>
+			</div>
+			<div class="nome_sitema">Sistema de Gestão de Processos Advocatícios</div>
+
+		</div>
+	</div>
+	
+	<div class="nav_menu" id="nav_menu">
+		<div class="nav_menu_int">
+			<div class="nav_id_ususario">		
+				<table>
+					<tr>
+						<td style="vertical-align: middle"><i class="icon-user"></i></td>
+						<td style="vertical-align: bottom"><h:outputText id="nomeSessao" value="#{usuarioLoginBean.nomeSessao} "/></td>
+						<td style="vertical-align: middle"><i class="icon-lock"></i></td>
+						<td style="vertical-align: bottom"><p:commandLink value=" Sair" action="#{usuarioLoginBean.sair}"/></td>
+					</tr>
+				</table>				
+			</div>
+		</div>
+		<div class="clr">
+			<!--clear float -->
+		</div>
+	</div>
+
+	<div class="menu navbar">
+		<button type="button" class="btn btn-navbar" data-toggle="collapse"
+			data-target=".nav-collapse">
+			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+				class="icon-bar"></span>
+		</button>
+		<h:form>
+			<p:menubar> 
+					<p:submenu label="#{messages['menu.cadastro']}" icon="ui-icon-document">
+						<p:menuitem value="#{messages['menu.cadastro.contrato']}" icon="ui-icon-folder-collapsed" action="#{cadastraContratoBean.view()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}"/>
+						<p:menuitem value="#{messages['menu.notificacoes.cliente']}" icon="ui-icon-document" action="#{cadastraNotificacaoBean.view()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}"/>
+						<p:menuitem value="#{messages['menu.cadastro.pagamento']}" icon="ui-icon-document" action="#{cadastraPagamentoBean.view()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}"/>
+						<p:menuitem value="#{messages['menu.administrador.processos']}" icon="ui-icon-clipboard" action="#{cadastraProcessoBean.view()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}"/>
+					</p:submenu>
+					<p:submenu label="#{messages['menu.consultar']}" icon="ui-icon-search">
+						<p:menuitem value="#{messages['menu.cadastro.contrato']}" icon="ui-icon-folder-collapsed" action="#{cadastraContratoBean.consulta()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}"/>
+						<p:submenu label="#{messages['menu.notificacoes.cliente']}" icon="ui-icon-document" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}">
+							<p:menuitem value="#{messages['menu.notificacao.enviada']}" icon="ui-icon-arrow-1-ne" action="#{cadastraNotificacaoBean.consultaEnviadas()}"/>
+							<p:menuitem value="#{messages['menu.notificacao.recebida']}" icon="ui-icon-arrow-1-sw" action="#{cadastraNotificacaoBean.consultaRecebidas()}"/>
+						</p:submenu>
+						<p:menuitem value="#{messages['menu.cadastro.pagamento']}" icon="ui-icon-document" action="#{cadastraPagamentoBean.consulta()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}"/>
+						<p:menuitem value="#{messages['menu.administrador.processos']}" icon="ui-icon-clipboard" action="#{cadastraProcessoBean.consulta()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'CLIENTE' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR' or usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADVOGADO'}"/>
+					</p:submenu>
+					<p:submenu label="#{messages['menu.relatorios']}" icon="ui-icon-document" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}">
+						<p:menuitem value="#{messages['menu.relatorios.processos']}" icon="ui-icon-document" action="#{relatorioBean.viewProcessos()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}" style="width:195px;"/>
+						<p:menuitem value="#{messages['menu.relatorios.rentabilidade']}" icon="ui-icon-document" action="#{relatorioBean.view()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}" style="width:195px;"/>
+						<p:menuitem value="#{messages['menu.relatorios.porcentagem']}" icon="ui-icon-document" action="#{relatorioBean.viewPorcentagem()}" rendered="#{usuarioLoginBean.pessoa.tipoPessoa.descricao == 'ADMINISTRADOR'}" style="width:195px;"/>
+					</p:submenu>
+					<p:menuitem value="#{messages['menu.advogado.alterarDados']}" icon="ui-icon-contact" action="#{cadastraPessoaBean.editar(usuarioLoginBean.pessoa)}"/>
+			</p:menubar>
+		</h:form>		
+	</div>
+
+	<p:spacer height="10" />	
+		
+	<p:messages id="messages" showDetail="false" showSummary="true" autoUpdate="true" closable="true" />
+	  
+	<div class="corpo form-horizontal">
+		<ui:insert name="content">
+		</ui:insert>
+	</div>
+
+	<div class="rodape">SISTEMA DE GESTÃO DE PROCESSOS ADVOCATÍCIOS - SGPA<br />
+						Versão: <h:outputText value="#{versaoBean.versaoSistema}"/>
+	</div>
+	
+		<!-- Modal que congela tela para carregar dados -->
+ 			<p:dialog modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false" id="modalStatusDialog">
+ 				<h:graphicImage url="/images/barra_carregando.gif"/>
+ 			</p:dialog>
+ 			
+</h:body>
+	</html>
+</f:view>
